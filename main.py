@@ -50,7 +50,10 @@ def MNIST_Test():
 		batch_size=8, shuffle=True)
 	model = ConvNet()
 
-	trainer = Trainer(dataloader=train_loader, network=model, epoch=20)
+	trainer = Trainer(dataloader=train_loader,
+	                  network=model,
+	                  loss_function=F.nll_loss,
+	                  epoch=20)
 	trainer.train()
 
 if __name__ == '__main__':

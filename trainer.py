@@ -38,10 +38,10 @@ class Trainer(object):
 				data, target = data.to(self.device), target.to(self.device)
 				self.opt.zero_grad()
 				output = self.net(data)
-				loss = F.nll_loss(output, target)
+				loss = self.loss_F(output, target)
 				loss.backward()
 				self.opt.step()
-				if (batch_idx + 1) % 10 == 0:
+				if (batch_idx + 1) % 30 == 0:
 					print('Train Epoch: {} [{}/{} ({:.2f}%)]\tLoss: {:.6f}'.format(
 						epoch, batch_idx * len(data), len(self.dataloader.dataset),
 						100. * batch_idx / len(self.dataloader), loss.item())
