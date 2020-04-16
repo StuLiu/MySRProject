@@ -15,6 +15,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torchvision import datasets, transforms
 from trainer import Trainer
+from tester import Tester
 
 class ConvNet(nn.Module):
 	def __init__(self):
@@ -40,6 +41,12 @@ class ConvNet(nn.Module):
 		out = F.log_softmax(out, dim=1) # 计算log(softmax(x))
 		return out
 
+def acc(y_, y):
+	index_val = 0
+	pred = y_.max(1, keepdim=True)[1]  # 找到概率最大的下标
+	index_val += pred.eq(y.view_as(pred)).sum()
+	print('acc:',index_val)
+
 def MNIST_Test():
 	train_loader = torch.utils.data.DataLoader(
 		datasets.MNIST('data', train=True, download=True,
@@ -47,14 +54,23 @@ def MNIST_Test():
 			               transforms.ToTensor(),
 			               transforms.Normalize((0.1307,), (0.3081,))
 		               ])),
-		batch_size=8, shuffle=True)
+		batch_size=32, shuffle=True)
+	test_loader = torch.utils.data.DataLoader(
+		datasets.MNIST('data', train=False, transform=transforms.Compose([
+			transforms.ToTensor(),
+			transforms.Normalize((0.1307,), (0.3081,))
+		])),
+		batch_size=32, shuffle=True)
 	model = ConvNet()
-
-	trainer = Trainer(dataloader=train_loader,
-	                  network=model,
-	                  loss_function=F.nll_loss,
-	                  epoch=20)
-	trainer.train()
-
+	for i in range(10):
+		trainer = Trainer(dataloader=train_loader,
+		                  network=model,
+		                  loss_function=F.nll_loss,
+		                  epoch=1)
+		model = trainer.train()
+		tester = Tester(test_loader, model, [acc])
+		print('test indexes:', tester.test())
 if __name__ == '__main__':
 	MNIST_Test()
+	# a = [0] * 5
+	# print(a)

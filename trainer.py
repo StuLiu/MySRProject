@@ -12,7 +12,6 @@
 '''
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
 class Trainer(object):
 	""" The class to train networks"""
@@ -47,3 +46,4 @@ class Trainer(object):
 						epoch, batch_idx * len(data), len(self.dataloader.dataset),
 						100. * batch_idx / len(self.dataloader), loss.item())
 					)
+		return self.net
