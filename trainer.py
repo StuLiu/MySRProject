@@ -24,6 +24,7 @@ class Trainer(object):
 	             epoch=1000,
 	             loss_function=nn.MSELoss()):
 		self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+		print('device:', self.device)
 		self.dataloader = dataloader
 		self.net = network.to(self.device)
 		self.lr = learning_rate
