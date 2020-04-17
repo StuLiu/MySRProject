@@ -37,7 +37,7 @@ class Tester(object):
 				for i, F in enumerate(self.index_F_list):
 					test_indexes[i] += F(output, target)
 				if (batch_idx + 1) % 30 == 0:
-					sys.stdout.write('\rTest proceeding:[{}/{}]\ttest indexes:'.format(
+					sys.stdout.write('\rTest proceeding:[{}/{}]\ttest indexes:{}'.format(
 						batch_idx * len(data), len(self.dataloader.dataset),
 						str(test_indexes))
 					)
