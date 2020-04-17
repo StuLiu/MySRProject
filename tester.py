@@ -36,11 +36,6 @@ class Tester(object):
 				output = self.net(data)
 				for i, F in enumerate(self.index_F_list):
 					test_indexes[i] += F(output, target)
-				if (batch_idx + 1) % 100 == 0:
-					sys.stdout.write('\rTest proceeding:[{}/{}]\ttest indexes:{}'.format(
-						batch_idx * len(data), len(self.dataloader.dataset),
-						[ele / (batch_idx * len(data)) for ele in test_indexes])
-					)
-			sys.stdout.write('\r{}\n'.format(
-				[ele / len(self.dataloader.dataset) for ele in test_indexes]))
-		return [ele / len(self.dataloader.dataset) for ele in test_indexes]
+			results = [ele / len(self.dataloader.dataset) for ele in test_indexes]
+			sys.stdout.write('\rTest indexes:{}\n'.format(results))
+		return results
