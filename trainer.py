@@ -10,6 +10,7 @@
 @Desciption  : None
 --------------------------------------------------------  
 '''
+import sys
 import torch
 import torch.nn as nn
 
@@ -34,6 +35,7 @@ class Trainer(object):
 	def train(self):
 		self.net.train()
 		for epoch in range(1, self.epoch + 1):
+			loss_epoch = 0
 			for batch_idx, (data, target) in enumerate(self.dataloader):
 				data, target = data.to(self.device), target.to(self.device)
 				self.opt.zero_grad()
@@ -41,9 +43,12 @@ class Trainer(object):
 				loss = self.loss_F(output, target)
 				loss.backward()
 				self.opt.step()
+				loss_epoch += loss.item()
 				if (batch_idx + 1) % 30 == 0:
-					print('Train Epoch: {} [{}/{} ({:.2f}%)]\tLoss: {:.6f}'.format(
+					sys.stdout.write('\rTrain Epoch: {} [{}/{} ({:.2f}%)]\tLoss: {:.6f}'.format(
 						epoch, batch_idx * len(data), len(self.dataloader.dataset),
-						100. * batch_idx / len(self.dataloader), loss.item())
+						100. * batch_idx / len(self.dataloader),
+						loss_epoch / (batch_idx * len(data)))
 					)
+			print('\n')
 		return self.net

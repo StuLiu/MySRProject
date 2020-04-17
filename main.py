@@ -44,8 +44,9 @@ class ConvNet(nn.Module):
 def acc(y_, y):
 	index_val = 0
 	pred = y_.max(1, keepdim=True)[1]  # 找到概率最大的下标
-	index_val += pred.eq(y.view_as(pred)).sum()
-	print('acc:',index_val)
+	index_val += pred.eq(y.view_as(pred)).sum().item()
+	return index_val
+	# print('acc:', index_val)
 
 def MNIST_Test():
 	train_loader = torch.utils.data.DataLoader(
@@ -66,7 +67,7 @@ def MNIST_Test():
 		trainer = Trainer(dataloader=train_loader,
 		                  network=model,
 		                  loss_function=F.nll_loss,
-		                  epoch=1)
+		                  epoch=2)
 		model = trainer.train()
 		tester = Tester(test_loader, model, [acc])
 		print('test indexes:', tester.test())

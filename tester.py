@@ -19,7 +19,7 @@ class Tester(object):
 		:param dataloader:  a test dataloader object
 		:param network:     a trained network
 		:param functions:   a list of functions of which each has two parameters
-			to compute test indexes with tensor type, and the test indexes must be a number.
+			to compute test indexes, and the test indexes must be a number.
 		"""
 		self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 		print('device:', self.device)
@@ -31,9 +31,13 @@ class Tester(object):
 		self.net.eval()
 		test_indexes = [0] * len(self.index_F_list)
 		with torch.no_grad():
-			for data, target in self.dataloader:
+			for batch_idx, (data, target) in enumerate(self.dataloader):
 				data, target = data.to(self.device), target.to(self.device)
 				output = self.net(data)
 				for i, F in enumerate(self.index_F_list):
-					test_indexes[i] += F(output, target).item()
+					test_indexes[i] += F(output, target)
+				if (batch_idx + 1) % 30 == 0:
+					print('Test proceeding:[{}/{}]'.format(
+						batch_idx * len(data), len(self.dataloader.dataset))
+					)
 		return [ele / len(self.dataloader.dataset) for ele in test_indexes]
