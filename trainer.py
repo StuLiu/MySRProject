@@ -50,4 +50,5 @@ class Trainer(object):
 						100. * batch_idx / len(self.dataloader),
 						loss_epoch / (batch_idx * len(data)))
 					)
+			sys.stdout.write('\n')
 		return self.net
