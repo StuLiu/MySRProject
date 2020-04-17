@@ -39,7 +39,8 @@ class Tester(object):
 				if (batch_idx + 1) % 100 == 0:
 					sys.stdout.write('\rTest proceeding:[{}/{}]\ttest indexes:{}'.format(
 						batch_idx * len(data), len(self.dataloader.dataset),
-						[ele / len(self.dataloader.dataset) for ele in test_indexes])
+						[ele / (batch_idx * len(data)) for ele in test_indexes])
 					)
-			sys.stdout.write('\n')
+			sys.stdout.write('\r{}\n'.format(
+				[ele / len(self.dataloader.dataset) for ele in test_indexes]))
 		return [ele / len(self.dataloader.dataset) for ele in test_indexes]
