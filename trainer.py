@@ -44,7 +44,7 @@ class Trainer(object):
 				loss.backward()
 				self.opt.step()
 				loss_epoch += loss.item()
-				if (batch_idx + 1) % 30 == 0:
+				if (batch_idx + 1) % 100 == 0:
 					sys.stdout.write('\rTrain Epoch: {} [{}/{} ({:.2f}%)]\tLoss: {:.6f}'.format(
 						epoch, batch_idx * len(data), len(self.dataloader.dataset),
 						100. * batch_idx / len(self.dataloader),

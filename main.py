@@ -9,7 +9,8 @@
 @Version     : 1.0   
 @Desciption  : None
 --------------------------------------------------------  
-''' 
+'''
+import sys
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -70,7 +71,7 @@ def MNIST_Test():
 		                  epoch=2)
 		model = trainer.train()
 		tester = Tester(test_loader, model, [acc])
-		print('test indexes:', tester.test())
+		tester.test()
 if __name__ == '__main__':
 	MNIST_Test()
 	# a = [0] * 5
